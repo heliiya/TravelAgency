@@ -3,7 +3,9 @@ package main;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.bson.BsonValue;
@@ -97,8 +99,10 @@ public class Main {
 			Driver driver = new Driver(name, phoneNumber, CarType.getCarType(carTypeName));
 			BsonValue driverId = collection.insertOne(driver.generateDocument()).getInsertedId();
 			System.out.println("It's your id: " + driverId.asObjectId().getValue());
-		}catch(Exception e){
+		}catch(InputMismatchException d){
 			System.err.println("Your input data is invalid!");
+		}catch(NoSuchElementException e){
+			System.err.println("Your car type name is invalid!");
 		}
 	}
 
@@ -167,13 +171,7 @@ public class Main {
 	}
 	
 	private static void endTravel(){
-		System.out.println("How many points do you give to the driver from 0 to 5?");
-		Double rating = 0.0;
-		try{
-			rating = Double.parseDouble(scanner.next());
-		}catch(Exception e){
-			System.err.println("Your point is invalid.");
-		}
+		Double rating = getRating();
 		Document document = collection.find(eq("isBusy", true)).first();
 		
 		Driver driver = new Driver(document);
@@ -181,6 +179,22 @@ public class Main {
 		
 		collection.updateOne(eq("_id", document.get("_id")), new Document("$set", driver.generateEndTravelUpdatedDocument()));
 		System.out.println("We hope you have a good travel.");
+	}
+
+	private static Double getRating() {
+		System.out.println("How many points do you give to the driver from 0 to 5?");
+		Double rating = 0.0;
+		try{
+			rating = Double.parseDouble(scanner.next());
+		}catch(Exception e){
+			System.err.println("Your point is invalid.");
+			return getRating();
+		}
+		if(rating < 0 || rating > 5){
+			System.err.println("Your point is invalid.");
+			return getRating();
+		}
+		return rating;
 	}
 
 	private static void exit() {

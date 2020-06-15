@@ -1,6 +1,7 @@
 package main;
 
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 
 import org.bson.Document;
 
@@ -13,7 +14,7 @@ public class Driver {
 	private double sumOfRatings;
 	private long ratingCounts;
 	
-	public Driver(String name, String phoneNumber, CarType carType) {
+	public Driver(String name, String phoneNumber, CarType carType) throws InputMismatchException {
 		if(name != null && !name.trim().isEmpty() && name.length() <= 20)
 			this.name = name;
 		else
@@ -35,7 +36,11 @@ public class Driver {
 	public Driver(Document doc) {
 		name = doc.getString("name");
 		phoneNumber = doc.getString("phoneNumber");
-		carType = CarType.getCarType(doc.getString("carTypeName"));
+		try{
+			carType = CarType.getCarType(doc.getString("carTypeName"));
+		}catch(NoSuchElementException e){
+			System.err.println(e.getMessage());
+		}
 		isBusy = doc.getBoolean("isBusy", false);
 		cash = doc.getLong("cash");
 		sumOfRatings = doc.getDouble("sumOfRatings");

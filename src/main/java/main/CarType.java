@@ -1,10 +1,9 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public enum CarType {
 	BMV("BMV"),
@@ -36,7 +35,7 @@ public enum CarType {
 		return Arrays.stream(CarType.values()).map(value -> value.name).collect(Collectors.toList());
 	}
 	
-	public static CarType getCarType(String key){
+	public static CarType getCarType(String key) throws NoSuchElementException{
 		return Arrays.stream(CarType.values())
 				.filter(value -> value.name.equals(key)).findFirst().get();
 	}
