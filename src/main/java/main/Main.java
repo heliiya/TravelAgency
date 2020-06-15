@@ -18,9 +18,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 
 public class Main {
-
-	static final String _ID = "_id";
-	
 	private static Scanner scanner;
 	private static MongoCollection<Document> collection;
 	private static boolean isOpen;
@@ -110,8 +107,8 @@ public class Main {
 		String id = scanner.next();
 		try{
 			ObjectId objectId = new ObjectId(id);
-			collection.updateOne(eq(_ID, objectId), new Document("$set", new Document("cash", 0)));
-			DeleteResult deleteResult = collection.deleteOne(new Document(_ID, objectId));
+			collection.updateOne(eq("_id", objectId), new Document("$set", new Document("cash", 0)));
+			DeleteResult deleteResult = collection.deleteOne(new Document("_id", objectId));
 			if(deleteResult.getDeletedCount() <= 0)
 				System.err.println("No driver found by this id.");
 			else
@@ -162,7 +159,7 @@ public class Main {
 			String vip = justVIP ? " VIP " : " ";
 			System.out.println("Sorry! No" + vip + "driver found yet.");
 		}else{
-			collection.updateOne(eq(_ID, document.get(_ID)), new Document("$set", new Document("isBusy", true)));
+			collection.updateOne(eq("_id", document.get("_id")), new Document("$set", new Document("isBusy", true)));
 			Driver driver = new Driver(document);
 			driver.setBusy(true);
 			System.out.println(driver.toString());
@@ -182,7 +179,7 @@ public class Main {
 		Driver driver = new Driver(document);
 		driver.endTravel(rating);
 		
-		collection.updateOne(eq(_ID, document.get(_ID)), new Document("$set", driver.generateEndTravelUpdatedDocument()));
+		collection.updateOne(eq("_id", document.get("_id")), new Document("$set", driver.generateEndTravelUpdatedDocument()));
 		System.out.println("We hope you have a good travel.");
 	}
 
