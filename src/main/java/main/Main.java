@@ -3,7 +3,7 @@ package main;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.bson.BsonValue;
@@ -83,7 +83,7 @@ public class Main {
 		System.out.println("Enter phone number:");
 		String phoneNumber = scanner.next();
 		System.out.println("Chose car from below list:");
-		ArrayList<String> carTypeNames = CarType.getCarTypeNames();
+		List<String> carTypeNames = CarType.getCarTypeNames();
 		int size = carTypeNames.size();
 		for (int i = 0; i < size; i++) {
 			String carTypeName = carTypeNames.get(i);

@@ -2,6 +2,9 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum CarType {
 	BMV("BMV"),
@@ -29,14 +32,12 @@ public enum CarType {
 		}
 	}
 	
-	public static ArrayList<String> getCarTypeNames(){
-		ArrayList<String> carTypeNames = new ArrayList<>();
-		Arrays.asList(CarType.values()).stream().forEach(value -> carTypeNames.add(value.name));
-		return carTypeNames;
+	public static List<String> getCarTypeNames(){
+		return Arrays.stream(CarType.values()).map(value -> value.name).collect(Collectors.toList());
 	}
 	
 	public static CarType getCarType(String key){
-		return Arrays.asList(CarType.values()).stream()
+		return Arrays.stream(CarType.values())
 				.filter(value -> value.name.equals(key)).findFirst().get();
 	}
 }
