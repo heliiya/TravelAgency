@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public enum CarType {
 	BMV("BMV"),
@@ -30,28 +31,12 @@ public enum CarType {
 	
 	public static ArrayList<String> getCarTypeNames(){
 		ArrayList<String> carTypeNames = new ArrayList<>();
-		for (CarType carType : CarType.values()) {
-			carTypeNames.add(carType.name);
-		}
+		Arrays.asList(CarType.values()).stream().forEach(value -> carTypeNames.add(value.name));
 		return carTypeNames;
 	}
 	
 	public static CarType getCarType(String key){
-		if(BMV.name.equals(key))
-			return BMV;
-		if(PRIDE.name.equals(key))
-			return PRIDE;
-		if(PEUGEOT_206.name.equals(key))
-			return PEUGEOT_206;
-		if(	PEUGEOT_GLX.name.equals(key))
-			return 	PEUGEOT_GLX;
-		if(RANA.name.equals(key))
-			return RANA;
-		if(CERATO.name.equals(key))
-			return CERATO;
-		if(LEXUS.name.equals(key))
-			return LEXUS;
-		
-		return null;
+		return Arrays.asList(CarType.values()).stream()
+				.filter(value -> value.name.equals(key)).findFirst().get();
 	}
 }
